@@ -1,5 +1,5 @@
 import re
-import itertools
+from operator import itemgetter
 # Regex patterns
 H1 = re.compile(r'(?<=#\s).+')
 Hx = re.compile(r'#+\s.+') # lookahead requires fixed length (i.e. not #+)
@@ -22,21 +22,26 @@ outfile = readfile.replace(".md", ".tex")
 
 # not in order
 ## use h.start(0) to sort?, need to rewind/seek iters?
+
+lines = []
+# clean up and load to list
+for h in Iter_H1:
+    h.group(0).replace("#","")
+    section = "\\sectiontitle{" + h.group(0) + "}"
+    lines.append([h.start(0), section])
+for hx in Iter_Hx:
+    hx.group(0).replace("#","")
+    subsection = "\\sectionsubtitle{" + hx.group(0) + "}"
+    lines.append([hx.start(0), subsection])
+for eq in Iter_EQ:
+    eq.group(0).replace("$$","").replace("\n","")
+    equation = "\\[" + eq.group(0) + "\\]"
+    lines.append([eq.start(0), equation])
+
+lines.sort(key=itemgetter(0)) # sort by .start(0)
+
 with open(outfile,'w') as w:
-    for h in Iter_H1:
-        w.write("\\sectiontitle{")
-        w.write(h.group(0))
-        w.write("}\n")
-    for hx in Iter_Hx:
-        w.write("\\sectiontsubitle{")
-        w.write(hx.group(0).replace("#", ""))
-        w.write("}\n")
-    for eq in Iter_EQ:
-        w.write("\\[ ",)
-        w.write(eq.group(0).replace("$", "").replace("\n","")) 
-        w.write(" \\]\n")
-    # for il in Iter_Il:
-    #     w.write(il.group(0))
-    #     w.write("\n")
-        
-print("Completed!\n Output .tex file:", outfile)
+    for line in lines:
+        w.write(line[1])
+        w.write("\n")
+print("Completed!\n Output .tex file: }")
