@@ -15,7 +15,8 @@ if (not readfile.find(".md")):
     
 # make out file
 outfile = readfile.replace(".md", ".tex")
-# pass output directory
+
+# put output file in specified path
 if (len(argv) == 3):
     outfile = os.path.split(readfile)[1] # get last component in path
     out_path = argv[2]
@@ -24,7 +25,7 @@ if (len(argv) == 3):
 
 # open file
 with open(readfile, "r") as r:
-    notes=r.read() # les allan fileinn, gæti overloadað memory ef ég passa mig ekki.
+    notes=r.read() # could overload memory?
     Iter_H1 = H1.finditer(notes)
     Iter_Hx = Hx.finditer(notes)
     Iter_EQ = EQ.finditer(notes)
@@ -42,10 +43,13 @@ for eq in Iter_EQ:
     equation = "\\[" + eq.group(0).replace("$", "").replace("\n","") + "\\]"
     lines.append([eq.start(0), equation])
 
-lines.sort(key=itemgetter(0)) # sort by .start(0)
+# sort by .start(0)
+lines.sort(key=itemgetter(0)) 
 
 with open(outfile,'w') as w:
     for line in lines:
         w.write(line[1])
         w.write("\n")
 print("Completed!\nOutput file:", outfile)
+
+# TODO: limit size of input files allowed, or work the file in chunks.
