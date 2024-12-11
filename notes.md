@@ -41,14 +41,11 @@ get notað replace() í headings fyrir ##?
 
 (tested)
 #### HEADING 1 pattern
-\ (?<=#\s).+ 
+\ (?<!#)#\s.+
 #### HEADING 2+ pattern
-\ #+\s.+'
+\ ##+\s.+
 #### EQUATION pattern
-\ (?<=\$\$\s)\s*.+\s*(?=\s\$\$)
+\ \$\$\s*.+\s*\$\$
 *þarf að sleppa lookahead því hún les ekki $$ og tekur því $$ oftar en 1x*
-(?<=\$\$\s)\s*.+\s*(?=\s\$\$)
 
 ## Debug
-er að lenda í veseni með regexið, það er ekki að matcha neitt í notes breytunni
-held að það sé því að þegar við erum að lesa með open() þá fáum við ehv formattaðan string, ekki raw eins og við viljum.

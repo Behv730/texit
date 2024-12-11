@@ -1,27 +1,29 @@
 import re
 from operator import itemgetter
+from sys import argv
+
 # Regex patterns
 H1 = re.compile(r'(?<!#)#\s.+') # negative lookbehind
-Hx = re.compile(r'##\s.+') 
-EQ = re.compile(r'\$\$\s*.+\s*\$\$') # (?<= xxx) er lookahead og sleepir því að setja með, fæ því bara eq
-# Il = re.compile(r'\$.+\$') # inline math
+Hx = re.compile(r'##+\s.+') 
+EQ = re.compile(r'\$\$\s*.+\s*\$\$')
 
-# make it an arg, import argc argv from system?
-readfile = "files/8 Kafli copy.md"
+readfile = argv[1] # pass with quotes if spaces in file name
+
+if (not readfile.find(".md")):
+    print("File must be .md")
+    exit
+    
+# make out file
+outfile = readfile.replace(".md", ".tex")
+    
+
 # open file
 with open(readfile, "r") as r:
     notes=r.read() # les allan fileinn, gæti overloadað memory ef ég passa mig ekki.
     Iter_H1 = H1.finditer(notes)
     Iter_Hx = Hx.finditer(notes)
     Iter_EQ = EQ.finditer(notes)
-    #Iter_Il = Il.finditer(notes)
-# make out file
-outfile = readfile.replace(".md", ".tex")
 
-
-
-# not in order
-## use h.start(0) to sort?, need to rewind/seek iters?
 
 lines = []
 # clean up and load to list
@@ -41,4 +43,4 @@ with open(outfile,'w') as w:
     for line in lines:
         w.write(line[1])
         w.write("\n")
-print("Completed!\n Output .tex file:")
+print("Completed!\nOutput file:", outfile)
