@@ -1,7 +1,7 @@
 import re
 from operator import itemgetter
 from sys import argv
-
+import os
 # Regex patterns
 H1 = re.compile(r'(?<!#)#\s.+') # negative lookbehind
 Hx = re.compile(r'##+\s.+') 
@@ -15,7 +15,12 @@ if (not readfile.find(".md")):
     
 # make out file
 outfile = readfile.replace(".md", ".tex")
-    
+# pass output directory
+if (len(argv) == 3):
+    outfile = os.path.split(readfile)[1] # get last component in path
+    out_path = argv[2]
+    outfile = out_path + outfile.replace(".md",".tex")
+
 
 # open file
 with open(readfile, "r") as r:
