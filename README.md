@@ -1,6 +1,6 @@
 # Texit
 A Python script that reads .md files and outputs a .tex file containing equations and headings.
-- $$ enclosed equations become \\[ equation \\]
+- \$\$ enclosed equations become \\[ equation \\]
 - 1headings become \\sectiontitle{ 1heading}
 - other headings become \\ sectionsubtitle{ other heading }
 

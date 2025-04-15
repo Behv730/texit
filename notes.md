@@ -45,7 +45,7 @@ get notað replace() í headings fyrir ##?
 #### HEADING 2+ pattern
 \ ##+\s.+
 #### EQUATION pattern
-\ \$\$\s*.+\s*\$\$
+\$\$\s*.+[\s]*[^\$]*\$\$
 *þarf að sleppa lookahead því hún les ekki $$ og tekur því $$ oftar en 1x*
-
+allt sem byrjar á $$ og inniheldur texta svo whitespace en ekki $, svo $$.
 ## Debug
